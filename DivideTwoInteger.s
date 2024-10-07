@@ -1,6 +1,6 @@
     .data
-dividend:    .word -70              # Dividend
-divisor:     .word 11               # Divisor
+dividend:    .word 0xfffffff1            # Dividend
+divisor:     .word 1            # Divisor
 result:      .word 0                # Store result
 msg1: .string "the dividend is "    # Message 1
 msg2: .string "the divisor is "     # Message 2
@@ -71,22 +71,20 @@ shift_computation:
     # Call my_clz to calculate leading zeros of absDivisor and absDividend
     mv t0, s1               # Move absDivisor to t0
     jal my_clz              # Call my_clz
-    mv t4, t0               # Store the result in t4
+    add t4, t0, x0          # Store the result in t4
 
     mv t0, s0               # Move absDividend to t0
     jal my_clz              # Call my_clz
-    mv t5, t0               # Store the result in t5
+    add t5, t0, x0          # Store the result in t5
 
     sub t6, t4, t5          # shift = clz(absDivisor) - clz(absDividend)
 
-    blt t6, x0, adjust_shift_zero
+    blt t6, x0, done
 
     sll s3, s1, t6          # tempDivisor = absDivisor << shift
-    blt s3, s0, no_shift_adjustment
+    ble s3, s0, no_shift_adjustment
     j shift_adjustment
 
-adjust_shift_zero:
-    li t6, 0                # shift = 0
 
 no_shift_adjustment:
     sll s3, s1, t6          # tempDivisor = absDivisor << shift
@@ -133,7 +131,7 @@ my_clz:
     sw t3, 8(sp)            # Save t3
 
     li t1, 0                # Initialize counter t1 to 0
-    li t2, 31               # Set bit position (starting from 31)
+    
 
 clz_loop:
     beqz t0, clz_done       # If t0 is 0, jump to clz_done
@@ -141,11 +139,11 @@ clz_loop:
     bnez t3, clz_done       # If highest bit is 1, jump to clz_done
     addi t1, t1, 1          # Increment counter
     slli t0, t0, 1          # Shift t0 left, check the next bit
-    addi t2, t2, -1         # Decrease bit position
+    
     j clz_loop              # Jump back to clz_loop
 
 clz_done:
-    mv t0, t1               # Store the result (leading zero count) in t0
+    add t0, t1, x0               # Store the result (leading zero count) in t0
 
     # Restore saved registers (not restoring t0)
     lw t1, 0(sp)
