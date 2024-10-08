@@ -1,3 +1,4 @@
+# for Divide two integer
 # Test Case 1: Simple division with positive numbers
 # Input: dividend = 10, divisor = 2
 # Expected Output: result = 5
@@ -67,3 +68,40 @@
 # dividend = 5
 # divisor = 5
 # Call divide
+
+
+#####################################
+
+# MinimumMovestoReachTargetScore
+
+# Test Case 1
+# target : 157561568
+# maxDoubles = 12
+# Output = 38482
+
+# Test Case 2
+# target : 10
+# maxDoubles = 2
+# Output = 4
+
+# Test Case 3
+# target : 565868992
+# maxDoubles = 41
+# Output = 42
+
+# Test Case 4
+# target : 19
+# maxDoubles = 2
+# Output = 7
+
+# Test Case 5
+# target : 565868992
+# maxDoubles = 3
+# Output = 70733626
+
+# Test Case 6
+# target : 12566397
+# maxDoubles = 100
+# Output = 42
+
+
